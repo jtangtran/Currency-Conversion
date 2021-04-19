@@ -5,6 +5,7 @@ export default function CurrencyConvertor() {
     // Country API 
     const countriesAPI = 'https://restcountries.eu/rest/v2/all';
 
+    //currency options for the select
     const [currencyOptions, setCurrencyOptions] = useState([]);
     const [fromCurrencyCode, setFromCurrencyCode] = useState();
     const [toCurrencyCode, setToCurrencyCode] = useState();
@@ -46,8 +47,6 @@ export default function CurrencyConvertor() {
             })
             //error when either country code does not exist in the exchange rates api
             .catch(err => {
-                debugger
-                console.log(err)
                 setErrMsg('Unfortunately the currency code you have submitted is not in our system. Please try again with a different currency code.')
                 setDisplayMsg(false)
             });
@@ -94,7 +93,7 @@ export default function CurrencyConvertor() {
     const onUserInputChange = e => {
         setErrMsg('');
         setDisplayMsg(true);
-        //this case occurs when the user entered a hyphen for the input
+        //this case occurs when the user has entered a hyphen for the input
         if (e.target.value === '') {
             setErrMsg('Please enter a valid input, no characters (excluding the decimal).');
             setDisplayMsg(false);

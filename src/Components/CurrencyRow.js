@@ -23,7 +23,7 @@ export default function CurrencyRow(props) {
                 </div>
             ) : (
                 <div>
-                    <input type="number" className="col-md-6 m-2" value={value} min="0" onChange={onValueChange} />
+                    <input type="number" className="col-md-6 m-2" value={value} min="0" onChange={onValueChange} step="0.01"/>
                     <select className="ml-1 form-select" value={selectedCurrency} onChange={onChangeCurrency}>
                         {currencyOptions.map(option => (
                             <option key={option} value={option}>{option}</option>
