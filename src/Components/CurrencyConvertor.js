@@ -17,7 +17,7 @@ export default function CurrencyConvertor() {
     let readOnly = true;
 
     useEffect(() => {
-        //fetches the country api and sets the default values for the fromCurrency and the toCurrency
+        //fetches the country api and sets the default values for the fromCurrencyCode and the toCurrencyCode
         fetch(countriesAPI)
         .then(res => res.json())
         .then(data => {
@@ -34,11 +34,13 @@ export default function CurrencyConvertor() {
     }, []);
 
     useEffect(() => {
-        if (fromCurrencyCode !== undefined && toCurrencyCode !== undefined && userInput > 0) {
+        //calculates the conversion amount if the fromCurrencyCode and toCurrencyCode is not undefined and if userInput is greater than 0
+        if (fromCurrencyCode !== undefined && toCurrencyCode !== undefined && userInput >= 0) {
             fetch(`https://v6.exchangerate-api.com/v6/${process.env.REACT_APP_API_KEY}/pair/${fromCurrencyCode}/${toCurrencyCode}/${userInput}`)
             .then(res => res.json())
             .then(data => {
                 setConversionRate(data.conversion_rate)
+                //rounds the result of the conversion to 2 decimal places
                 let rounded = data.conversion_result.toFixed(2);
                 setTotal(rounded);
             })
@@ -109,6 +111,7 @@ export default function CurrencyConvertor() {
             { displayMsg ? (
                 <p>The conversion rate for {fromCurrencyCode} to {toCurrencyCode} is {conversionRate}.</p>
             ) : (<p></p>)}
+            {/* fromCurrencyCode */}
             <CurrencyRow 
                 currencyOptions={currencyOptions} 
                 selectedCurrency={fromCurrencyCode} 
@@ -121,6 +124,7 @@ export default function CurrencyConvertor() {
                 <h5 className="">=</h5>
                 <button className="btn-primary btn btn-lg m-2" onClick={switchCurrencyCode}>&#8595;&#8593;</button>
             </div>
+            {/* toCurrencyCode */}
             <CurrencyRow 
                 currencyOptions={currencyOptions} 
                 selectedCurrency={toCurrencyCode} 
