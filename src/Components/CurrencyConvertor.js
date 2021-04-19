@@ -4,8 +4,7 @@ import CurrencyRow from './CurrencyRow';
 export default function CurrencyConvertor() {
     // Country API 
     const countriesAPI = 'https://restcountries.eu/rest/v2/all';
-
-    //currency options for the select
+    //States
     const [currencyOptions, setCurrencyOptions] = useState([]);
     const [fromCurrencyCode, setFromCurrencyCode] = useState();
     const [toCurrencyCode, setToCurrencyCode] = useState();
@@ -14,7 +13,7 @@ export default function CurrencyConvertor() {
     const [total, setTotal] = useState(1);
     const [conversionRate, setConversionRate] = useState(1);
     const [displayMsg, setDisplayMsg] = useState(true);
-
+    //flag to send to the CurrencyRow
     let readOnly = true;
 
     useEffect(() => {
@@ -47,7 +46,7 @@ export default function CurrencyConvertor() {
             })
             //error when either country code does not exist in the exchange rates api
             .catch(err => {
-                setErrMsg('Unfortunately the currency code you have submitted is not in our system. Please try again with a different currency code.')
+                setErrMsg('Unfortunately the currency code you have entered is not in our system. Please try again with a different currency code.')
                 setDisplayMsg(false)
             });
         }
@@ -93,12 +92,10 @@ export default function CurrencyConvertor() {
     const onUserInputChange = e => {
         setErrMsg('');
         setDisplayMsg(true);
-        //this case occurs when the user has entered a hyphen for the input
+        //handles if the user has entered a negative input and then autocorrects the input to be a 1
         if (e.target.value === '') {
-            setErrMsg('Please enter a valid input, no characters (excluding the decimal).');
-            setDisplayMsg(false);
-            let posValue = Math.abs(e.target.value);
-            setUserInput(posValue);
+            alert('Please enter a valid input of numbers only.');
+            setUserInput(1);
             return;
         }
         else {
@@ -109,7 +106,7 @@ export default function CurrencyConvertor() {
     return (
         <div className="text-center">
             <h1 className="mt-4">Currency Conversion:</h1>
-            <h4 className="mt-2 text-success">Enter currency to start converting!</h4>
+            <h4 className="mt-2 text-success">Enter a number to begin the currency conversion!</h4>
             <h5 className="mt-3 text-danger">{errMsg}</h5>
             { displayMsg ? (
                 <p>The conversion rate for {fromCurrencyCode} to {toCurrencyCode} is {conversionRate}.</p>
