@@ -6,16 +6,33 @@ export default function CurrencyRow(props) {
         selectedCurrency,
         onChangeCurrency,
         value,
-        onValueChange
+        onValueChange,
+        readOnly
     } = props
+    console.log(readOnly)
     return (
         <div className="text-center">
-            <input type="number" className="col-md-6 m-2" value={value} onChange={onValueChange}/>
-            <select className="ml-1 form-select" value={selectedCurrency} onChange={onChangeCurrency}>
-                {currencyOptions.map(option => (
-                    <option key={option} value={option}>{option}</option>
-                ))}
-            </select>
+            {/* Changes the input tag to be readOnly if the boolean readOnly is set to true from props */}
+            {readOnly ? (
+                <div>
+                    <input type="number" className="col-md-6 m-2" value={value} readOnly/>
+                    <select className="ml-1 form-select" value={selectedCurrency} onChange={onChangeCurrency}>
+                        {currencyOptions.map(option => (
+                            <option key={option} value={option}>{option}</option>
+                        ))}
+                    </select>
+                </div>
+            ) : (
+                <div>
+                    <input type="number" className="col-md-6 m-2" value={value} onChange={onValueChange}/>
+                    <select className="ml-1 form-select" value={selectedCurrency} onChange={onChangeCurrency}>
+                        {currencyOptions.map(option => (
+                            <option key={option} value={option}>{option}</option>
+                        ))}
+                    </select>
+                </div>
+            )}
+            
         </div>
     )
 }
