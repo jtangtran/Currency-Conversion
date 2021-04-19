@@ -9,7 +9,6 @@ export default function CurrencyRow(props) {
         onValueChange,
         readOnly
     } = props
-    console.log(readOnly)
     return (
         <div className="text-center">
             {/* Changes the input tag to be readOnly if the boolean readOnly is set to true from props */}
@@ -24,7 +23,7 @@ export default function CurrencyRow(props) {
                 </div>
             ) : (
                 <div>
-                    <input type="number" className="col-md-6 m-2" value={value} onChange={onValueChange}/>
+                    <input type="number" className="col-md-6 m-2" value={value} min="0" onChange={onValueChange} />
                     <select className="ml-1 form-select" value={selectedCurrency} onChange={onChangeCurrency}>
                         {currencyOptions.map(option => (
                             <option key={option} value={option}>{option}</option>

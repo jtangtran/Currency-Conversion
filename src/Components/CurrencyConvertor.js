@@ -35,7 +35,7 @@ export default function CurrencyConvertor() {
 
     useEffect(() => {
         //calculates the conversion amount if the fromCurrencyCode and toCurrencyCode is not undefined and if userInput is greater than 0
-        if (fromCurrencyCode !== undefined && toCurrencyCode !== undefined && userInput >= 0) {
+        if (fromCurrencyCode !== undefined && toCurrencyCode !== undefined && userInput > 0) {
             fetch(`https://v6.exchangerate-api.com/v6/${process.env.REACT_APP_API_KEY}/pair/${fromCurrencyCode}/${toCurrencyCode}/${userInput}`)
             .then(res => res.json())
             .then(data => {
@@ -46,6 +46,8 @@ export default function CurrencyConvertor() {
             })
             //error when either country code does not exist in the exchange rates api
             .catch(err => {
+                debugger
+                console.log(err)
                 setErrMsg('Unfortunately the currency code you have submitted is not in our system. Please try again with a different currency code.')
                 setDisplayMsg(false)
             });
@@ -92,21 +94,23 @@ export default function CurrencyConvertor() {
     const onUserInputChange = e => {
         setErrMsg('');
         setDisplayMsg(true);
-        if (e.target.value < 0) {
-            let posValue = Math.abs(e.target.value);
-            setErrMsg('Number cannot be negative');
+        //this case occurs when the user entered a hyphen for the input
+        if (e.target.value === '') {
+            setErrMsg('Please enter a valid input, no characters (excluding the decimal).');
             setDisplayMsg(false);
+            let posValue = Math.abs(e.target.value);
             setUserInput(posValue);
             return;
-        } else {
+        }
+        else {
             setUserInput(e.target.value);
         }
     }
 
     return (
         <div className="text-center">
-            <h1 className="mt-4">Currency Convertor:</h1>
-            <h4 className="mt-2 text-primary">Enter currency to start converting!</h4>
+            <h1 className="mt-4">Currency Conversion:</h1>
+            <h4 className="mt-2 text-success">Enter currency to start converting!</h4>
             <h5 className="mt-3 text-danger">{errMsg}</h5>
             { displayMsg ? (
                 <p>The conversion rate for {fromCurrencyCode} to {toCurrencyCode} is {conversionRate}.</p>
@@ -122,7 +126,7 @@ export default function CurrencyConvertor() {
             />
             <div className="text-center">
                 <h5 className="">=</h5>
-                <button className="btn-primary btn btn-lg m-2" onClick={switchCurrencyCode}>&#8595;&#8593;</button>
+                <button className="btn-success btn btn-lg m-2" onClick={switchCurrencyCode}>&#8595;&#8593;</button>
             </div>
             {/* toCurrencyCode */}
             <CurrencyRow 
@@ -133,7 +137,7 @@ export default function CurrencyConvertor() {
                 readOnly={readOnly}    
             />
             { displayMsg ? (
-                <p className="text-center">{userInput} {fromCurrencyCode} is approximately equivalent to {total} {toCurrencyCode}</p>
+                <p className="text-center">{userInput} {fromCurrencyCode} is approximately equivalent to {total} {toCurrencyCode} (rounded to 2 decimal places).</p>
             ) : (<p></p>)}
 
         </div>
