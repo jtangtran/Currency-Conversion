@@ -1,4 +1,4 @@
-import CurrencyConvertor from './Components/CurrencyConvorter';
+import CurrencyConvertor from './Components/CurrencyConvertor';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
